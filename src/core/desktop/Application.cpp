@@ -1,14 +1,13 @@
 // -*- C++ -*-
 #include <core/desktop/Application.h>
 #include <core/desktop/GLWindow.h>
-#include "DesktopStreamFactory.h"
 
-Application::Application(const string& title, const Dimension windowSize)
+Application::Application(const string& title, const Dimension windowSize, App* app)
 {
     window = unique_ptr<GLWindow>(new GLWindow(title, windowSize, false));
     window->setFrameLimit(60);
 
-    this->game = shared_ptr<Game>(new Game(shared_ptr<StreamFactory>(new DesktopStreamFactory("assets"))));
+    this->app = app;
 }
 
 Application::~Application()
@@ -18,7 +17,7 @@ Application::~Application()
 int Application::run()
 {
     window->init();
-    game->init(window->getSize());
+    app->init(window->getSize());
 
     while (window->isOpen())
     {
@@ -26,7 +25,7 @@ int Application::run()
 
         window->processEvents();
 
-        game->render();
+        app->render();
 
         window->swapBuffers();
     }

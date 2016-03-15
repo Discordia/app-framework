@@ -6,12 +6,15 @@
 //
 
 #include <core/android/Activity.h>
+#include <core/android/AndroidStreamFactory.h>
 
-void android_main(android_app* app)
+void android_main(android_app* androidApp)
 {
     app_dummy();
 
-    unique_ptr<Activity> activity(new Activity(app));
+    App* app = createApp(shared_ptr<StreamFactory>(new AndroidStreamFactory(androidApp->activity->assetManager)));
+
+    unique_ptr<Activity> activity(new Activity(androidApp, app));
     activity->run();
 }
 
@@ -22,12 +25,15 @@ void android_main(android_app* app)
 //
 
 #include <core/desktop/Application.h>
+#include <core/desktop/DesktopStreamFactory.h>
 
 int main()
 {
     const Dimension windowSize(1024, 768);
 
-    unique_ptr<Application> application(new Application("Application example", windowSize));
+    App* app = createApp(shared_ptr<StreamFactory>(new DesktopStreamFactory("assets")));
+    
+    unique_ptr<Application> application(new Application("Application example", windowSize, app));
     application->run();
 }
 

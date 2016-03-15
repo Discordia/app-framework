@@ -2,13 +2,15 @@
 #define ANDROID_APP_GAME_H
 
 
-#include <core/StreamFactory.h>
+#include <core/App.h>
 #include <core/Dimension.h>
+#include <core/StreamFactory.h>
 
-class Game
+class Game : public App
 {
 public:
     Game(shared_ptr<StreamFactory> streamFactory);
+    ~Game();
 
     void init(const Dimension& windowSize);
     void render();

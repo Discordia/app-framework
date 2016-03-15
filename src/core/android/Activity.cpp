@@ -2,22 +2,18 @@
 #include <core/android/Activity.h>
 #include <core/Log.h>
 
-#include <core/android/AndroidStreamFactory.h>
-
 #define LOG_TAG "Activity"
 
 const int DEFAULT_FPS = 60;
 
-Activity::Activity(android_app *app)
-        : app(app)
+Activity::Activity(android_app *androidApp, App* app)
+        : androidApp(androidApp), app(app)
 {
     LOGD("Activity", "ACTIVITY::CONSTRUCTOR");
 
     // EGL Window - the surface we draw to
-    window = unique_ptr<EGLWindow>(new EGLWindow(app));
+    window = unique_ptr<EGLWindow>(new EGLWindow(androidApp));
     window->setFramerateLimit(DEFAULT_FPS);
-
-    this->game = shared_ptr<Game>(new Game(shared_ptr<StreamFactory>(new AndroidStreamFactory(app->activity->assetManager))));
 }
 
 int32_t Activity::handleInput(AInputEvent *event)
@@ -25,9 +21,9 @@ int32_t Activity::handleInput(AInputEvent *event)
     return 0;
 }
 
-static int32_t handle_input(struct android_app *app, AInputEvent *event)
+static int32_t handle_input(struct android_app *androidApp, AInputEvent *event)
 {
-    return ((Activity *) app->userData)->handleInput(event);
+    return ((Activity *) androidApp->userData)->handleInput(event);
 }
 
 void Activity::handleCmd(int32_t cmd)
@@ -44,10 +40,10 @@ void Activity::handleCmd(int32_t cmd)
 
         case APP_CMD_INIT_WINDOW:
             LOGD("Activity", "APP_CMD_INIT_WINDOW");
-            if (app->window != nullptr)
+            if (androidApp->window != nullptr)
             {
                 window->init();
-                game->init(window->getSize());
+                app->init(window->getSize());
             }
             break;
 
@@ -78,16 +74,16 @@ void Activity::handleCmd(int32_t cmd)
     }
 }
 
-static void handle_cmd(struct android_app *app, int32_t cmd)
+static void handle_cmd(struct android_app *androidApp, int32_t cmd)
 {
-    ((Activity *) app->userData)->handleCmd(cmd);
+    ((Activity *) androidApp->userData)->handleCmd(cmd);
 }
 
 void Activity::run()
 {
-    app->userData = this;
-    app->onAppCmd = handle_cmd;
-    app->onInputEvent = handle_input;
+    androidApp->userData = this;
+    androidApp->onAppCmd = handle_cmd;
+    androidApp->onInputEvent = handle_input;
 
     // TODO: restore state
 
@@ -103,11 +99,11 @@ void Activity::run()
         {
             if (source != nullptr)
             {
-                source->process(app, source);
+                source->process(androidApp, source);
             }
 
             //We are exiting
-            if (app->destroyRequested != 0)
+            if (androidApp->destroyRequested != 0)
             {
                 window->destroy();
                 return;
@@ -119,7 +115,7 @@ void Activity::run()
         {
             float frameTime = window->getFrameTime();
 
-            game->render();
+            app->render();
 
             window->swapBuffers();
         }

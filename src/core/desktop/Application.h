@@ -19,7 +19,7 @@ public:
     //!
     //!
     //!
-    Application(const string& title, const Dimension windowSize);
+    Application(const string& title, const Dimension windowSize, App* app);
 
     //!
     //!
@@ -38,5 +38,5 @@ private:
     unique_ptr<GLWindow> window;
 
     //!
-    shared_ptr<Game> game;
+    App* app;
 };

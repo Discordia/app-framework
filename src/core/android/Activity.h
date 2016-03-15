@@ -10,7 +10,7 @@
 
 #include <core/android/EGLWindow.h>
 #include <core/Dimension.h>
-#include <Game.h>
+#include <core/App.h>
 
 using std::unique_ptr;
 
@@ -26,7 +26,7 @@ public:
     //!
     //!
     //!
-    Activity(android_app *app);
+    Activity(android_app *androidApp, App* app);
 
     //!
     //!
@@ -46,11 +46,11 @@ public:
 private:
 
     //!
-    android_app *app;
+    android_app *androidApp;
 
     //!
     unique_ptr<EGLWindow> window;
 
     //!
-    shared_ptr<Game> game;
+    App* app;
 };

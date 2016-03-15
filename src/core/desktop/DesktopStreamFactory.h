@@ -19,9 +19,9 @@ private:
     string directoryName;
 };
 
-#endif //FREETYPE_SAMPLE_DESKTOPSTREAMFACTORY_H
-
 shared_ptr<Stream> DesktopStreamFactory::open(const string& fileName)
 {
     return shared_ptr<Stream>(new FileStream(directoryName + "/" + fileName));
 }
+
+#endif //FREETYPE_SAMPLE_DESKTOPSTREAMFACTORY_H
