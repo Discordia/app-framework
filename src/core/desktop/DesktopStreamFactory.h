@@ -1,5 +1,4 @@
-#ifndef FREETYPE_SAMPLE_DESKTOPSTREAMFACTORY_H
-#define FREETYPE_SAMPLE_DESKTOPSTREAMFACTORY_H
+#pragma once
 
 #include "core/StreamFactory.h"
 #include "FileStream.h"
@@ -23,5 +22,3 @@ shared_ptr<Stream> DesktopStreamFactory::open(const string& fileName)
 {
     return shared_ptr<Stream>(new FileStream(directoryName + "/" + fileName));
 }
-
-#endif //FREETYPE_SAMPLE_DESKTOPSTREAMFACTORY_H

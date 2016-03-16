@@ -1,5 +1,4 @@
-#ifndef FREETYPE_SAMPLE_ANDROIDSTREAMFACTORY_H
-#define FREETYPE_SAMPLE_ANDROIDSTREAMFACTORY_H
+#pragma once
 
 #include <android/asset_manager.h>
 
@@ -19,8 +18,6 @@ public:
 private:
     AAssetManager* assetManager;
 };
-
-#endif //FREETYPE_SAMPLE_ANDROIDSTERAMFACTORY_H
 
 shared_ptr<Stream> AndroidStreamFactory::open(const string& fileName)
 {

@@ -1,5 +1,4 @@
-#ifndef FREETYPE_SAMPLE_STREAMFACTORY_H
-#define FREETYPE_SAMPLE_STREAMFACTORY_H
+#pragma once
 
 #include <core/Stream.h>
 
@@ -18,4 +17,3 @@ public:
     virtual shared_ptr<Stream> open(const string& fileName) = 0;
 };
 
-#endif //FREETYPE_SAMPLE_STREAMFACTORY_H
