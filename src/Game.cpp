@@ -8,23 +8,24 @@
 
 const string vertexShaderSource =
         "attribute vec4 position;\n"
-        "uniform mat4 Projection;\n"
-        "uniform mat4 ModelView;\n"
-        "\n"
-        "void main(void)\n"
-        "{\n"
-        "    gl_Position = Projection * ModelView * position;\n"
-        "}";
+                "uniform mat4 Projection;\n"
+                "uniform mat4 ModelView;\n"
+                "\n"
+                "void main(void)\n"
+                "{\n"
+                "    gl_Position = Projection * ModelView * position;\n"
+                "}";
 
 const string fragmentShaderSource =
         "uniform vec4 diffuseColor;\n"
-        "\n"
-        "void main(void)\n"
-        "{\n"
-        "     gl_FragColor = diffuseColor;\n"
-        "}";
+                "\n"
+                "void main(void)\n"
+                "{\n"
+                "     gl_FragColor = diffuseColor;\n"
+                "}";
 
 Game::Game(shared_ptr<StreamFactory> streamFactory)
+        : animationX(0), animationStep(10)
 {
     linkIssueFix();
 }
@@ -82,18 +83,18 @@ void Game::init(const Dimension& windowSize)
     glUniform4fv(diffuseColorLoc, 1, colorV);
 
     float vertices[] = {
-      100.0f, 100.0f,
-      100.0f, 200.0f,
-      200.0f, 200.0f,
-      200.0f, 100.0f
+            100.0f, 100.0f,
+            100.0f, 200.0f,
+            200.0f, 200.0f,
+            200.0f, 100.0f
     };
 
     vertexBuffer->bind();
     vertexBuffer->fill(0, 8 * sizeof(float), vertices);
 
     GLubyte indices[] = {
-        0, 1, 2,
-        2, 3, 0
+            0, 1, 2,
+            2, 3, 0
     };
 
     indexBuffer->bind();
@@ -105,6 +106,22 @@ void Game::render()
     // Clear screen
     glClear(GL_COLOR_BUFFER_BIT);
 
+    // translate
+    float modelView[16] = {
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            animationX, 0, 0, 1
+    };
+
+    if (animationX > 800) animationStep = -10;
+    else if (animationX < 0) animationStep = 10;
+
+    animationX += animationStep;
+
+    GLint modelViewLoc = glGetUniformLocation(shader->getProgramId(), "ModelView");
+    glUniformMatrix4fv(modelViewLoc, 1, 0, modelView);
+
     // position
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
     glEnableVertexAttribArray(0);
@@ -113,7 +130,8 @@ void Game::render()
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
 }
 
-App* createApp(shared_ptr<StreamFactory> streamFactory) {
+App* createApp(shared_ptr<StreamFactory> streamFactory)
+{
     return new Game(streamFactory);
 }
 

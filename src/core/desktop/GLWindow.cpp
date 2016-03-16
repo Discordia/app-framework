@@ -73,6 +73,8 @@ GLWindow::GLWindow(const string& title, const Dimension windowSize, bool fullscr
     this->windowSize.width = width;
     this->windowSize.height = height;
 
+    glfwSwapInterval(1);
+
     LOGI("Frame Buffer size [%i,%i]", width, height);
     LOGI("Initalized");
 }

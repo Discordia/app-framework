@@ -17,6 +17,8 @@ public:
     void render();
 
 private:
+    float animationX;
+    float animationStep;
     shared_ptr<BufferObject> vertexBuffer;
     shared_ptr<BufferObject> indexBuffer;
     shared_ptr<ShaderProgram> shader;

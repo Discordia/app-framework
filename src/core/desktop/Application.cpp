@@ -4,7 +4,7 @@
 
 Application::Application(const string& title, const Dimension windowSize, App* app)
 {
-    window = unique_ptr<GLWindow>(new GLWindow(title, windowSize, false));
+    window = unique_ptr<GLWindow>(new GLWindow(title, windowSize, true));
     window->setFrameLimit(60);
 
     this->app = app;
