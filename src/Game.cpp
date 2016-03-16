@@ -2,7 +2,7 @@
 
 Game::Game(shared_ptr<StreamFactory> streamFactory)
 {
-
+    linkIssueFix();
 }
 
 Game::~Game()

@@ -9,6 +9,11 @@ endif()
 set(CMAKE_CXX_FLAGS
         "-std=c++11 -ffor-scope -fno-exceptions -pipe -ffunction-sections -fdata-sections -ffast-math -pedantic -Werror -Wnon-virtual-dtor -Wsign-promo -fvisibility=hidden -fvisibility-inlines-hidden -Wstrict-null-sentinel -Os -funroll-all-loops -fpeel-loops -ftree-vectorize")
 
+#
+# Dependencies
+#
+add_subdirectory(src/core)
+
 #includes
 include_directories(src)
 
@@ -19,43 +24,16 @@ endif()
 
 # source
 set(SOURCE_FILES
-        src/Main.cpp
         src/Game.cpp
-        src/core/BufferObject.cpp
-        src/core/Dimension.h
-        src/core/Log.cpp
-        src/core/OpenGL.cpp
-        src/core/ShaderObject.cpp
-        src/core/ShaderProgram.h
-        src/core/Time.h
-        src/core/Stream.h
-        src/core/StreamFactory.h)
+        src/Game.h)
 
 if(ANDROID)
-    list(APPEND SOURCE_FILES
-            src/core/android/EGLWindow.cpp
-            src/core/android/Activity.cpp
-            src/core/android/AndroidStreamFactory.h
-            src/core/android/AssetStream.cpp
-            src/core/android/AssetStream.h
-            $ENV{ANDROID_NDK_HOME}/sources/android/native_app_glue/android_native_app_glue.c)
-
-
     add_library(app_framework SHARED ${SOURCE_FILES})
-    target_link_libraries(app_framework log android EGL GLESv2 z)
+    target_link_libraries(app_framework app_framework_library log android EGL GLESv2 z)
     set_target_properties(app_framework PROPERTIES COMPILE_DEFINITIONS "ANDROID")
 
-    android_create_apk(app_framework "org.discordia.prototype.androidapp" "${CMAKE_BINARY_DIR}/apk" "${CMAKE_SOURCE_DIR}/libs" "${CMAKE_SOURCE_DIR}/android" "${CMAKE_SOURCE_DIR}/assets")
+    android_create_apk(app_framework "org.discordia.prototype.appframework" "${CMAKE_BINARY_DIR}/apk" "${CMAKE_SOURCE_DIR}/libs" "${CMAKE_SOURCE_DIR}/android" "${CMAKE_SOURCE_DIR}/assets")
 else()
-    list(APPEND SOURCE_FILES
-            src/core/desktop/GLWindow.cpp
-            src/core/desktop/GLWindow.h
-            src/core/desktop/Application.cpp
-            src/core/desktop/Application.h
-            src/core/desktop/FileStream.h
-            src/core/desktop/FileStream.cpp
-            src/core/desktop/DesktopStreamFactory.h)
-
     # GLFW
     find_package(PkgConfig REQUIRED)
     pkg_search_module(GLFW REQUIRED glfw3)
@@ -66,7 +44,7 @@ else()
 
 
     add_executable(app_framework ${SOURCE_FILES})
-    target_link_libraries(app_framework ${GLEW_SHARED_LIBRARY} ${GLFW_STATIC_LIBRARIES})
+    target_link_libraries(app_framework app_framework_library ${GLEW_SHARED_LIBRARY} ${GLFW_STATIC_LIBRARIES})
 
     # Copy assets
     add_custom_command(TARGET app_framework PRE_BUILD

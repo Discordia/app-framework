@@ -16,6 +16,8 @@ public:
 
     virtual void init(const Dimension& windowSize) {}
     virtual void render() {}
+
+    void linkIssueFix();
 };
 
-App* createApp(shared_ptr<StreamFactory> streamFactory);
+extern App* createApp(shared_ptr<StreamFactory> streamFactory);
