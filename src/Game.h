@@ -1,10 +1,11 @@
-#ifndef ANDROID_APP_GAME_H
-#define ANDROID_APP_GAME_H
-
+#pragma once
 
 #include <core/App.h>
 #include <core/Dimension.h>
 #include <core/StreamFactory.h>
+
+class BufferObject;
+class ShaderProgram;
 
 class Game : public App
 {
@@ -14,7 +15,9 @@ public:
 
     void init(const Dimension& windowSize);
     void render();
+
+private:
+    shared_ptr<BufferObject> vertexBuffer;
+    shared_ptr<BufferObject> indexBuffer;
+    shared_ptr<ShaderProgram> shader;
 };
-
-
-#endif //ANDROID_APP_GAME_H
