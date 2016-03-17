@@ -1,4 +1,3 @@
-// -*- C++ -*-
 #include <core/android/Activity.h>
 #include <core/Log.h>
 
@@ -9,11 +8,7 @@ const int DEFAULT_FPS = 60;
 Activity::Activity(android_app *androidApp, App* app)
         : androidApp(androidApp), app(app)
 {
-    LOGD("Activity", "ACTIVITY::CONSTRUCTOR");
-
-    // EGL Window - the surface we draw to
     window = unique_ptr<EGLWindow>(new EGLWindow(androidApp));
-    window->setFramerateLimit(DEFAULT_FPS);
 }
 Activity::~Activity()
 {
@@ -38,7 +33,7 @@ void Activity::handleCmd(int32_t cmd)
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
-            // TODO: save state support
+            LOGD("Activity", "APP_CMD_SAVE_STATE");
             break;
 
         case APP_CMD_CONFIG_CHANGED:
@@ -122,7 +117,7 @@ void Activity::run()
         {
             float frameTime = window->getFrameTime();
 
-            app->render();
+            app->render(frameTime);
 
             window->swapBuffers();
         }

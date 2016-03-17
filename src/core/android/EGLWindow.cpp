@@ -82,6 +82,8 @@ void EGLWindow::init()
     this->windowSize.width = width;
     this->windowSize.height = height;
 
+    eglSwapInterval(display, 1);
+
     LOGI("Frame Buffer size [%i,%i]", width, height);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

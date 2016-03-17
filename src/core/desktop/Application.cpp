@@ -1,13 +1,10 @@
-// -*- C++ -*-
 #include <core/desktop/Application.h>
 #include <core/desktop/GLWindow.h>
 
 Application::Application(const string& title, const Dimension windowSize, App* app)
+    : app(app)
 {
     window = unique_ptr<GLWindow>(new GLWindow(title, windowSize, true));
-    window->setFrameLimit(60);
-
-    this->app = app;
 }
 
 Application::~Application()
@@ -29,7 +26,7 @@ int Application::run()
 
         window->processEvents();
 
-        app->render();
+        app->render(frameTime);
 
         window->swapBuffers();
     }

@@ -13,8 +13,8 @@ public:
     Game(shared_ptr<StreamFactory> streamFactory);
     ~Game();
 
-    void init(const Dimension& windowSize);
-    void render();
+    void init(const Dimension& windowSize) override;
+    void render(float frameTime) override;
 
 private:
     float animationX;

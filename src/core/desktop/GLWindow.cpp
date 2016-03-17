@@ -1,4 +1,3 @@
-// -*- C++ -*-
 #include <core/desktop/GLWindow.h>
 #include <core/Log.h>
 
@@ -13,10 +12,6 @@ using namespace std;
 
 //!
 const int DEFAULT_FPS = 60;
-
-//!
-const int DEFAULT_BIT_DEPTH = 32;
-
 
 GLWindow::GLWindow(const string& title, const Dimension windowSize, bool fullscreen)
     : windowSize(windowSize), frameTime(0), frameLimit(0)

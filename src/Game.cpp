@@ -101,7 +101,7 @@ void Game::init(const Dimension& windowSize)
     indexBuffer->fill(0, 6 * sizeof(GLubyte), indices);
 }
 
-void Game::render()
+void Game::render(float frameTime)
 {
     // Clear screen
     glClear(GL_COLOR_BUFFER_BIT);
