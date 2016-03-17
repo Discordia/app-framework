@@ -12,6 +12,10 @@ Application::Application(const string& title, const Dimension windowSize, App* a
 
 Application::~Application()
 {
+    if (app)
+    {
+        delete app;
+    }
 }
 
 int Application::run()

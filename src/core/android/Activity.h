@@ -31,6 +31,11 @@ public:
     //!
     //!
     //!
+    ~Activity();
+
+    //!
+    //!
+    //!
     int32_t handleInput(AInputEvent *event);
 
     //!

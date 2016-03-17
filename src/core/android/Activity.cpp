@@ -15,6 +15,13 @@ Activity::Activity(android_app *androidApp, App* app)
     window = unique_ptr<EGLWindow>(new EGLWindow(androidApp));
     window->setFramerateLimit(DEFAULT_FPS);
 }
+Activity::~Activity()
+{
+    if (app)
+    {
+        delete app;
+    }
+}
 
 int32_t Activity::handleInput(AInputEvent *event)
 {
