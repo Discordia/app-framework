@@ -6,10 +6,11 @@
 const int DEFAULT_FPS = 60;
 
 Activity::Activity(android_app *androidApp, App* app)
-        : androidApp(androidApp), app(app)
+        : androidApp(androidApp), app(app), resumed(false), hasFocus(false)
 {
     window = unique_ptr<EGLWindow>(new EGLWindow(androidApp));
 }
+
 Activity::~Activity()
 {
     if (app)
@@ -60,10 +61,12 @@ void Activity::handleCmd(int32_t cmd)
 
         case APP_CMD_RESUME:
             LOGD("Activity", "APP_CMD_RESUME");
+            resumed = true;
             break;
 
         case APP_CMD_PAUSE:
             LOGD("Activity", "APP_CMD_PAUSE");
+            resumed = false;
             break;
 
         case APP_CMD_STOP:
@@ -72,6 +75,16 @@ void Activity::handleCmd(int32_t cmd)
 
         case APP_CMD_DESTROY:
             LOGD("Activity", "APP_CMD_DESTROY");
+            break;
+
+        case APP_CMD_GAINED_FOCUS:
+            LOGD("Activity", "APP_CMD_GAINED_FOCUS");
+            hasFocus = true;
+            break;
+
+        case APP_CMD_LOST_FOCUS:
+            LOGD("Activity", "APP_CMD_LOST_FOCUS");
+            hasFocus = false;
             break;
     }
 }
@@ -113,7 +126,7 @@ void Activity::run()
         }
 
 
-        if (window->hasDisplay())
+        if (ready())
         {
             float frameTime = window->getFrameTime();
 
@@ -122,4 +135,9 @@ void Activity::run()
             window->swapBuffers();
         }
     }
+}
+
+bool Activity::ready()
+{
+    return window->hasDisplay() && resumed && hasFocus;
 }

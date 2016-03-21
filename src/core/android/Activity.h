@@ -51,6 +51,13 @@ public:
 private:
 
     //!
+    //! True if the activity is ready to render, false otherwise
+    //!
+    bool ready();
+
+private:
+
+    //!
     android_app *androidApp;
 
     //!
@@ -58,4 +65,8 @@ private:
 
     //!
     App* app;
+
+    //! state flags
+    bool resumed;
+    bool hasFocus;
 };
