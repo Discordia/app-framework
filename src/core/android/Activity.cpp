@@ -121,6 +121,8 @@ void Activity::run()
             if (androidApp->destroyRequested != 0)
             {
                 window->destroy();
+
+                ANativeActivity_finish(androidApp->activity);
                 return;
             }
         }
