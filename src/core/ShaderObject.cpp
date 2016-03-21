@@ -2,7 +2,7 @@
 #include <core/OpenGL.h>
 #include "Log.h"
 
-#define LOG_TAG "ShaderObject"
+static const Logger LOGGER = Logger::create("ShaderObject");
 
 ShaderObject::ShaderObject(GLuint shaderId, const string &shaderSource)
         : shaderId(shaderId), shaderSource(shaderSource)
@@ -29,7 +29,7 @@ ShaderObject::ShaderObject(GLuint shaderId, const string &shaderSource)
             char *infoLog = static_cast<char *>(malloc(sizeof(char) * infoLen));
 
             glGetShaderInfoLog(shaderId, infoLen, nullptr, infoLog);
-            LOGE("Error compiling shader:\n%s\n", infoLog);
+            LOGGER.logf(LOG_DEBUG, "Error compiling shader:\n%s\n", infoLog);
 
             free(infoLog);
         }

@@ -12,6 +12,14 @@ void logf(LogLevel level, const string tag, string format, ...)
     va_end(args);
 }
 
+void Logger::logf(const LogLevel level, string message, ...) const
+{
+   va_list args;
+   va_start(args, message);
+   __android_log_vprint(level, tag.c_str(), message.c_str(), args);
+   va_end(args);
+}
+
 #else
 
 #include <cstdarg>
@@ -21,7 +29,6 @@ const string ERROR_PREFIX = string("E/ ");
 const string WARN_PREFIX = string("W/ ");
 const string INFO_PREFIX = string("I/ ");
 const string DEBUG_PREFIX = string("D/ ");
-const string VERBOSE_PREFIX = string("V/ ");
 
 string getLevelPrefix(LogLevel level)
 {
@@ -38,26 +45,40 @@ string getLevelPrefix(LogLevel level)
 
         case LOG_DEBUG:
             return DEBUG_PREFIX;
-
-        case LOG_VERBOSE:
-            return VERBOSE_PREFIX;
     };
 
     return "";
 }
 
-void logf(LogLevel level, const string tag, string format, ...)
+void Logger::logf(const LogLevel level, string message, ...) const
 {
-    format += "\n";
+#ifdef NDEBUG
+    if (level == LOG_DEBUG)
+    {
+        return;
+    }
+#endif
+
+
+    message += "\n";
 
     string levelPrefix = getLevelPrefix(level);
     string logPrefix = levelPrefix + tag + " - ";
     fputs(logPrefix.c_str(), stdout);
 
     va_list args;
-    va_start(args, format);
-    vprintf(format.c_str(), args);
+    va_start(args, message);
+    vprintf(message.c_str(), args);
     va_end(args);
 }
 
 #endif
+
+Logger::Logger(const string& tag)
+        : tag(tag)
+{ }
+
+Logger Logger::create(const string& tag)
+{
+    return Logger(tag);
+}

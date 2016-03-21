@@ -1,7 +1,7 @@
 #include <core/android/Activity.h>
 #include <core/Log.h>
 
-#define LOG_TAG "Activity"
+static const Logger LOGGER = Logger::create("Activity");
 
 const int DEFAULT_FPS = 60;
 
@@ -34,15 +34,15 @@ void Activity::handleCmd(int32_t cmd)
     switch (cmd)
     {
         case APP_CMD_SAVE_STATE:
-            LOGD("Activity", "APP_CMD_SAVE_STATE");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_SAVE_STATE");
             break;
 
         case APP_CMD_CONFIG_CHANGED:
-            LOGD("Activity", "APP_CMD_CONFIG_CHANGED");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_CONFIG_CHANGED");
             break;
 
         case APP_CMD_INIT_WINDOW:
-            LOGD("Activity", "APP_CMD_INIT_WINDOW");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_INIT_WINDOW");
             if (androidApp->window != nullptr)
             {
                 window->init();
@@ -51,39 +51,39 @@ void Activity::handleCmd(int32_t cmd)
             break;
 
         case APP_CMD_TERM_WINDOW:
-            LOGD("Activity", "APP_CMD_TERM_WINDOW");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_TERM_WINDOW");
             window->destroy();
             break;
 
         case APP_CMD_START:
-            LOGD("Activity", "APP_CMD_START");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_START");
             break;
 
         case APP_CMD_RESUME:
-            LOGD("Activity", "APP_CMD_RESUME");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_RESUME");
             resumed = true;
             break;
 
         case APP_CMD_PAUSE:
-            LOGD("Activity", "APP_CMD_PAUSE");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_PAUSE");
             resumed = false;
             break;
 
         case APP_CMD_STOP:
-            LOGD("Activity", "APP_CMD_STOP");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_STOP");
             break;
 
         case APP_CMD_DESTROY:
-            LOGD("Activity", "APP_CMD_DESTROY");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_DESTROY");
             break;
 
         case APP_CMD_GAINED_FOCUS:
-            LOGD("Activity", "APP_CMD_GAINED_FOCUS");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_GAINED_FOCUS");
             hasFocus = true;
             break;
 
         case APP_CMD_LOST_FOCUS:
-            LOGD("Activity", "APP_CMD_LOST_FOCUS");
+            LOGGER.logf(LOG_DEBUG, "APP_CMD_LOST_FOCUS");
             hasFocus = false;
             break;
     }

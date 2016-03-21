@@ -4,7 +4,7 @@
 #include <core/ShaderProgram.h>
 #include <core/Log.h>
 
-#define LOG_TAG "Game"
+static const Logger LOGGER = Logger::create("Game");
 
 const string vertexShaderSource =
         "attribute vec4 position;\n"
@@ -50,15 +50,15 @@ void Game::init(const Dimension& windowSize)
     shader = ShaderProgram::create();
 
     shared_ptr<ShaderObject> vertexShader = ShaderObject::create(GL_VERTEX_SHADER, vertexShaderSource);
-    if (!vertexShader->isCompiled()) LOGE("Vertext shader failed to compile.");
+    if (!vertexShader->isCompiled()) LOGGER.logf(LOG_ERROR, "Vertext shader failed to compile.");
     shader->attachShader(vertexShader);
 
     shared_ptr<ShaderObject> fragmentShader = ShaderObject::create(GL_FRAGMENT_SHADER, fragmentShaderSource);
-    if (!fragmentShader->isCompiled()) LOGE("Fragment shader failed to compile.");
+    if (!fragmentShader->isCompiled()) LOGGER.logf(LOG_ERROR, "Fragment shader failed to compile.");
     shader->attachShader(fragmentShader);
 
     shader->link();
-    if (!shader->isLinked()) LOGE("Shader failed to link");
+    if (!shader->isLinked()) LOGGER.logf(LOG_ERROR, "Shader failed to link");
 
     // Bind vPosition to attribute 0
     glBindAttribLocation(shader->getProgramId(), 0, "position");

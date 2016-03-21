@@ -8,7 +8,7 @@
 #include <android_native_app_glue.h>
 #include <unistd.h>
 
-#define LOG_TAG "EGLWindow"
+static const Logger LOGGER = Logger::create("EGLWindow");
 
 EGLWindow::EGLWindow(android_app *app)
         : app(app),
@@ -22,8 +22,6 @@ EGLWindow::EGLWindow(android_app *app)
 
 void EGLWindow::init()
 {
-    LOGD("init()");
-
     /*
      * Here specify the attributes of the desired configuration.
      * Below, we select an EGLConfig with at least 8 bits per color
@@ -69,7 +67,7 @@ void EGLWindow::init()
 
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE)
     {
-        LOGD("EGLWindow", "Unable to eglMakeCurrent");
+        LOGGER.logf(LOG_ERROR, "Unable to eglMakeCurrent");
 
         // TODO: proper error handling
         return;
@@ -84,7 +82,7 @@ void EGLWindow::init()
 
     eglSwapInterval(display, 1);
 
-    LOGI("Frame Buffer size [%i,%i]", width, height);
+    LOGGER.logf(LOG_INFO, "Frame Buffer size [%i,%i]", width, height);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -93,34 +91,34 @@ void EGLWindow::init()
 
     glViewport(0, 0, width, height);
 
-    LOGI("Initalized");
+    LOGGER.logf(LOG_INFO, "Initalized");
 }
 
 void EGLWindow::destroy()
 {
-    LOGD("EGLWindow", "destroy()");
+    LOGGER.logf(LOG_DEBUG, "destroy()");
 
     if (display != EGL_NO_DISPLAY)
     {
-        LOGD("EGLWindow", "making no dsiaply current");
+        LOGGER.logf(LOG_DEBUG, "making no dsiaply current");
 
         eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 
         if (context != EGL_NO_CONTEXT)
         {
-            LOGD("EGLWindow", "destroying context");
+            LOGGER.logf(LOG_DEBUG, "destroying context");
 
             eglDestroyContext(display, context);
         }
 
         if (surface != EGL_NO_SURFACE)
         {
-            LOGD("EGLWindow", "destroying surface");
+            LOGGER.logf(LOG_DEBUG, "destroying surface");
 
             eglDestroySurface(display, surface);
         }
 
-        LOGD("EGLWindow", "terminating display");
+        LOGGER.logf(LOG_DEBUG, "terminating display");
 
         eglTerminate(display);
     }

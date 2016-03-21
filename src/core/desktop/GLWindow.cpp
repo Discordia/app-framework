@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define LOG_TAG "GLWindow"
+static const Logger LOGGER = Logger::create("GLWindow");
 
 //!
 const int DEFAULT_FPS = 60;
@@ -45,7 +45,7 @@ GLWindow::GLWindow(const string& title, const Dimension windowSize, bool fullscr
 
     if (!window)
     {
-        LOGE("Failed to create GLFW window");
+        LOGGER.logf(LOG_ERROR, "Failed to create GLFW window");
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
@@ -57,7 +57,7 @@ GLWindow::GLWindow(const string& title, const Dimension windowSize, bool fullscr
     GLenum err = glewInit();
     if (GLEW_OK != err)
     {
-        LOGE("Failed to initalize GLEW");
+        LOGGER.logf(LOG_ERROR, "Failed to initalize GLEW");
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
@@ -70,8 +70,8 @@ GLWindow::GLWindow(const string& title, const Dimension windowSize, bool fullscr
 
     glfwSwapInterval(1);
 
-    LOGI("Frame Buffer size [%i,%i]", width, height);
-    LOGI("Initalized");
+    LOGGER.logf(LOG_INFO, "Frame Buffer size [%i,%i]", width, height);
+    LOGGER.logf(LOG_INFO, "Initalized");
 }
 
 GLWindow::~GLWindow()
@@ -174,6 +174,5 @@ void GLWindow::keyCallback(GLFWwindow* handle, int key, int scancode, int action
 
 void GLWindow::errorCallback(int error, const char* description)
 {
-    string message = "GLFW error: " + string(description);
-    LOGE(message);
+    LOGGER.logf(LOG_ERROR, "GLFW error, error code: %d, description: %s", error, description);
 }
