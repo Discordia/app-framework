@@ -15,7 +15,13 @@ public:
     virtual ~App() {}
 
     virtual void init(const Dimension& windowSize) {}
+    virtual void resume() {}
+    virtual void pause() {}
+    virtual void destroy() {}
+
     virtual void render(float frameTime) {}
+
+    virtual void test() {}
 
     void linkIssueFix();
 };

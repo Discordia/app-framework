@@ -32,7 +32,6 @@ Game::Game(shared_ptr<StreamFactory> streamFactory)
 
 Game::~Game()
 {
-
 }
 
 void Game::init(const Dimension& windowSize)
@@ -99,6 +98,22 @@ void Game::init(const Dimension& windowSize)
 
     indexBuffer->bind();
     indexBuffer->fill(0, 6 * sizeof(GLubyte), indices);
+}
+
+void Game::pause()
+{
+}
+
+
+void Game::resume()
+{
+}
+
+void Game::destroy()
+{
+    vertexBuffer.reset();
+    indexBuffer.reset();
+    shader.reset();
 }
 
 void Game::render(float frameTime)

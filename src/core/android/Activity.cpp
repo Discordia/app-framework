@@ -53,6 +53,7 @@ void Activity::handleCmd(int32_t cmd)
         case APP_CMD_TERM_WINDOW:
             LOGGER.logf(LOG_DEBUG, "APP_CMD_TERM_WINDOW");
             window->destroy();
+            app->destroy();
             break;
 
         case APP_CMD_START:
@@ -62,11 +63,13 @@ void Activity::handleCmd(int32_t cmd)
         case APP_CMD_RESUME:
             LOGGER.logf(LOG_DEBUG, "APP_CMD_RESUME");
             resumed = true;
+            app->resume();
             break;
 
         case APP_CMD_PAUSE:
             LOGGER.logf(LOG_DEBUG, "APP_CMD_PAUSE");
             resumed = false;
+            app->pause();
             break;
 
         case APP_CMD_STOP:
@@ -120,6 +123,8 @@ void Activity::run()
             //We are exiting
             if (androidApp->destroyRequested != 0)
             {
+                LOGGER.logf(LOG_DEBUG, "Destroy requested, exiting...");
+                app->destroy();
                 window->destroy();
 
                 ANativeActivity_finish(androidApp->activity);

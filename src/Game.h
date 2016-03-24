@@ -14,12 +14,19 @@ public:
     ~Game();
 
     void init(const Dimension& windowSize) override;
+    void resume() override;
+    void pause() override;
+    void destroy() override;
+
     void render(float frameTime) override;
 
 private:
-    float animationX;
-    float animationStep;
+    // OGL ES State
     shared_ptr<BufferObject> vertexBuffer;
     shared_ptr<BufferObject> indexBuffer;
     shared_ptr<ShaderProgram> shader;
+
+    // App state
+    float animationX;
+    float animationStep;
 };

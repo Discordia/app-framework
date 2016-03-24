@@ -19,6 +19,7 @@ int Application::run()
 {
     window->init();
     app->init(window->getSize());
+    app->resume();
 
     while (window->isOpen())
     {
@@ -31,6 +32,8 @@ int Application::run()
         window->swapBuffers();
     }
 
+    app->pause();
+    app->destroy();
     window->destroy();
 
     return EXIT_SUCCESS;
