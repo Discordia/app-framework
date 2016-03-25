@@ -12,6 +12,6 @@ int main()
     application->run();
 }
 
-void App::linkIssueFix()
+void App::appDummy()
 {
 }

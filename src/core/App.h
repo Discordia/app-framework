@@ -21,9 +21,7 @@ public:
 
     virtual void render(float frameTime) {}
 
-    virtual void test() {}
-
-    void linkIssueFix();
+    void appDummy();
 };
 
 extern App* createApp(shared_ptr<StreamFactory> streamFactory);

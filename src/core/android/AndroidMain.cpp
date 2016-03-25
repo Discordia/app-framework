@@ -17,7 +17,7 @@ void android_main(android_app* androidApp)
     activity->run();
 }
 
-void App::linkIssueFix()
+void App::appDummy()
 {
 }
 

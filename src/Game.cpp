@@ -27,7 +27,7 @@ const string fragmentShaderSource =
 Game::Game(shared_ptr<StreamFactory> streamFactory)
         : animationX(0), animationStep(10)
 {
-    linkIssueFix();
+    appDummy();
 }
 
 Game::~Game()
