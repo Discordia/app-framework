@@ -3,8 +3,6 @@
 
 static const Logger LOGGER = Logger::create("Activity");
 
-const int DEFAULT_FPS = 60;
-
 Activity::Activity(android_app *androidApp, App* app)
         : androidApp(androidApp), app(app), resumed(false), hasFocus(false)
 {
