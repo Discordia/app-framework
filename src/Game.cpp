@@ -8,21 +8,21 @@ static const Logger LOGGER = Logger::create("Game");
 
 const string vertexShaderSource =
         "attribute vec4 position;\n"
-                "uniform mat4 Projection;\n"
-                "uniform mat4 ModelView;\n"
-                "\n"
-                "void main(void)\n"
-                "{\n"
-                "    gl_Position = Projection * ModelView * position;\n"
-                "}";
+        "uniform mat4 Projection;\n"
+        "uniform mat4 ModelView;\n"
+        "\n"
+        "void main(void)\n"
+        "{\n"
+        "    gl_Position = Projection * ModelView * position;\n"
+        "}";
 
 const string fragmentShaderSource =
         "uniform vec4 diffuseColor;\n"
-                "\n"
-                "void main(void)\n"
-                "{\n"
-                "     gl_FragColor = diffuseColor;\n"
-                "}";
+        "\n"
+        "void main(void)\n"
+        "{\n"
+        "     gl_FragColor = diffuseColor;\n"
+        "}";
 
 Game::Game(shared_ptr<StreamFactory> streamFactory)
         : animationX(0), animationStep(10)

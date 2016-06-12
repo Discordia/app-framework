@@ -14,7 +14,7 @@ static const Logger LOGGER = Logger::create("GLWindow");
 const int DEFAULT_FPS = 60;
 
 GLWindow::GLWindow(const string& title, const Dimension windowSize, bool fullscreen)
-    : windowSize(windowSize), frameTime(0), frameLimit(0)
+    : windowSize(windowSize), frameTime(0), frameLimit(DEFAULT_FPS)
 {
     if (!glfwInit())
     {
@@ -130,7 +130,9 @@ void GLWindow::processEvents() const
 
 void GLWindow::swapBuffers()
 {
-    // Limit the framerate if needed
+    glfwSwapBuffers(window);
+
+    // Limit the frame rate if needed
     if (frameLimit > 0)
     {
         milliseconds defaultFrameTime = milliseconds(1000 / frameLimit);
@@ -145,8 +147,6 @@ void GLWindow::swapBuffers()
 
     frameTime = timer.elapsedTimeMs();
     timer.reset();
-
-    glfwSwapBuffers(window);
 }
 
 float GLWindow::getFrameTime() const
