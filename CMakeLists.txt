@@ -7,7 +7,7 @@ endif()
 
 # compiler flags
 set(CMAKE_CXX_FLAGS
-        "-std=c++11 -ffor-scope -fno-exceptions -pipe -ffunction-sections -fdata-sections -ffast-math -pedantic -Werror -Wnon-virtual-dtor -Wsign-promo -fvisibility=hidden -fvisibility-inlines-hidden -Wstrict-null-sentinel -Os -funroll-all-loops -fpeel-loops -ftree-vectorize")
+        "-std=c++11 -ffor-scope -fno-exceptions -pipe -ffunction-sections -fdata-sections -ffast-math -pedantic -Werror -Wnon-virtual-dtor -Wsign-promo -fvisibility=hidden -fvisibility-inlines-hidden -Os -ftree-vectorize")
 
 #
 # Dependencies
@@ -33,6 +33,18 @@ if(ANDROID)
     set_target_properties(app_framework PROPERTIES COMPILE_DEFINITIONS "ANDROID")
 
     android_create_apk(app_framework "org.discordia.prototype.appframework" "${CMAKE_BINARY_DIR}/apk" "${CMAKE_SOURCE_DIR}/libs" "${CMAKE_SOURCE_DIR}/android" "${CMAKE_SOURCE_DIR}/assets")
+elseif(APPLE)
+    # GLFW
+    find_package(glfw3 REQUIRED)
+    include_directories(${GLFW_INCLUDE_DIRS})
+
+    find_package(GLEW REQUIRED)
+    include_directories(${GLEW_INCLUDE_DIRS})
+
+    # app_framework executable
+    add_executable(app_framework ${SOURCE_FILES})
+    target_link_libraries(app_framework app_framework_library ${GLEW_LIBRARY} glfw3)
+    target_link_libraries(app_framework "-framework OpenGL")
 else()
     # GLFW
     find_package(PkgConfig REQUIRED)
