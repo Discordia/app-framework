@@ -35,7 +35,8 @@ if(ANDROID)
     android_create_apk(app_framework "org.discordia.prototype.appframework" "${CMAKE_BINARY_DIR}/apk" "${CMAKE_SOURCE_DIR}/libs" "${CMAKE_SOURCE_DIR}/android" "${CMAKE_SOURCE_DIR}/assets")
 else()
     # GLFW
-    find_package(glfw REQUIRED)
+    find_package(PkgConfig REQUIRED)
+    pkg_search_module(GLFW REQUIRED glfw3)
     include_directories(${GLFW_INCLUDE_DIRS})
 
     # GLEW
