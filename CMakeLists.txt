@@ -35,16 +35,16 @@ if(ANDROID)
     android_create_apk(app_framework "org.discordia.prototype.appframework" "${CMAKE_BINARY_DIR}/apk" "${CMAKE_SOURCE_DIR}/libs" "${CMAKE_SOURCE_DIR}/android" "${CMAKE_SOURCE_DIR}/assets")
 else()
     # GLFW
-    find_package(PkgConfig REQUIRED)
-    pkg_search_module(GLFW REQUIRED glfw3)
+    find_package(glfw REQUIRED)
     include_directories(${GLFW_INCLUDE_DIRS})
 
     # GLEW
-    set(GLEW_SHARED_LIBRARY "/usr/lib/x86_64-linux-gnu/libGLEW.so")
+    find_path(GLEW_INCLUDE_DIR GL/glew.h)
+    find_library(GLEW_LIBRARY NAMES GLEW glew32 glew glew32s PATH_SUFFIXES lib64)
 
-
+    # app_framework executable
     add_executable(app_framework ${SOURCE_FILES})
-    target_link_libraries(app_framework app_framework_library ${GLEW_SHARED_LIBRARY} ${GLFW_STATIC_LIBRARIES})
+    target_link_libraries(app_framework app_framework_library ${GLEW_LIBRARY} ${GLFW_STATIC_LIBRARIES})
 
     # Copy assets
     add_custom_command(TARGET app_framework PRE_BUILD
