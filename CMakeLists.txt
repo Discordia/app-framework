@@ -44,7 +44,7 @@ elseif(APPLE)
     # app_framework executable
     add_executable(app_framework ${SOURCE_FILES})
     target_link_libraries(app_framework app_framework_library ${GLEW_LIBRARY} glfw3)
-    target_link_libraries(app_framework "-framework OpenGL")
+    target_link_libraries(app_framework "-framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo")
 else()
     # GLFW
     find_package(PkgConfig REQUIRED)

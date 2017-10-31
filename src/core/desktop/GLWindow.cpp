@@ -33,7 +33,6 @@ GLWindow::GLWindow(const string& title, const Dimension windowSize, bool fullscr
     glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
     glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
-
     if (fullscreen)
     {
         window = glfwCreateWindow(mode->width, mode->height, title.c_str(), monitor, nullptr);
@@ -54,6 +53,7 @@ GLWindow::GLWindow(const string& title, const Dimension windowSize, bool fullscr
     glfwMakeContextCurrent(window);
 
     // Initalize GLEW
+    glewExperimental = GL_TRUE;
     GLenum err = glewInit();
     if (GLEW_OK != err)
     {
@@ -71,7 +71,7 @@ GLWindow::GLWindow(const string& title, const Dimension windowSize, bool fullscr
     glfwSwapInterval(1);
 
     LOGGER.logf(LOG_INFO, "Frame Buffer size [%i,%i]", width, height);
-    LOGGER.logf(LOG_INFO, "Initalized");
+    LOGGER.logf(LOG_INFO, "Initalized, GL Version: %s", glGetString(GL_VERSION));
 }
 
 GLWindow::~GLWindow()
@@ -93,16 +93,8 @@ void GLWindow::init()
     // Setup OpenGL
     //
 
-
-    // Shading and color
-    glShadeModel(GL_SMOOTH);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-    //glEnable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_DITHER);
-    glDisable(GL_LIGHTING);
-
     glViewport(0, 0, windowSize.width, windowSize.height);
 
     // reset frame time
